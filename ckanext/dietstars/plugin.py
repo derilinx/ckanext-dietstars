@@ -1,14 +1,14 @@
 import copy
 import json
 
-import pylons.config as config
+# import pylons.config as config
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.lib.helpers as h
 
-from webhelpers.html import literal
+# from webhelpers.html import literal
 
 open_licenses = ['cc-by-4.0', 'psi', 'cc-by', 'cc-by-3.0', 'cc-by-2.0', 'cc-zero', 'cc0', 'gfdl', 'pddl', 'odc-by', 'uk-ogl']
 five_star_formats = ['rdf', 'n3', 'sparql', 'ttl', 'rdf-xml', 'jsonld']
