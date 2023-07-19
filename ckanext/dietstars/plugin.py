@@ -116,21 +116,24 @@ class DietStarsPlugin(plugins.SingletonPlugin):
 
     # IPackageController
 
-    def before_index(self, search_dict):
+    def before_dataset_index(self, search_dict):
         # we add the QA dict here so we can facet
         # print pkg_dict
         pkg_dict = json.loads(search_dict['data_dict'])
         search_dict['openness_score'] = get_qa_dict(pkg_dict)['openness_score']
         return search_dict
+    before_index = before_dataset_index
 
     # add the QA dict here so we can show it :)
-    def before_view(self, pkg_dict):
+    def before_dataset_view(self, pkg_dict):
         pkg_dict['qa'] = get_qa_dict(pkg_dict)
         return pkg_dict
+    before_view = before_dataset_view
 
-    def after_show(self, context, pkg_dict):
+    def after_dataset_show(self, context, pkg_dict):
         pkg_dict['qa'] = get_qa_dict(pkg_dict)
         return pkg_dict
+    after_show = after_dataset_show
 
     # IFacets
 
