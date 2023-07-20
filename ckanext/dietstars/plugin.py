@@ -121,6 +121,7 @@ class DietStarsPlugin(plugins.SingletonPlugin):
         # print pkg_dict
         pkg_dict = json.loads(search_dict['data_dict'])
         search_dict['openness_score'] = get_qa_dict(pkg_dict)['openness_score']
+        search_dict.pop('qa', None)
         return search_dict
     before_index = before_dataset_index
 
