@@ -40,7 +40,7 @@ page and not the left column.
 
 #}
 {% block facet_list_items %}
-    {% with items = items or h.get_facet_items_dict(name) %}
+    {% with items = items or h.get_facet_items_dict(name, search_facets) %}
         {% set title = title or h.get_facet_title(name) %}
         {% if items %}
             <nav>
@@ -52,7 +52,7 @@ page and not the left column.
                     {% for item in items %}
                         {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
                         {% set label = label_function(item) if label_function else item.display_name %}
-                        {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
+                        {% set label_truncated = label | truncate(22) if not label_function else label %}
                         {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
                         <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
                             <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
@@ -64,27 +64,27 @@ page and not the left column.
                                         </span>
                                     {% elif label_truncated == '4' %}
                                         <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span>
+                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="far fa-star"></span>
                                             {{ count }}
                                         </span>
                                     {% elif label_truncated == '3' %}
                                         <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
+                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span>
                                             {{ count }}
                                         </span>
                                     {% elif label_truncated == '2' %}
                                         <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
+                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span>
                                             {{ count }}
                                         </span>
                                     {% elif label_truncated == '1' %}
                                         <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
+                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span>
                                             {{ count }}
                                         </span>
                                     {% elif label_truncated == '0' %}
                                         <span>
-                                            <span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
+                                            <span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span><span style="display:inline" class="far fa-star"></span>
                                             {{ count }}
                                         </span>
                                     {% endif %}
