@@ -8,7 +8,7 @@ import ckan.model as model
 import ckan.lib.helpers as h
 
 
-open_licenses = ['cc-by-4.0', 'psi', 'cc-by', 'cc-by-3.0', 'cc-by-2.0', 'cc-zero', 'cc0', 'gfdl', 'pddl', 'odc-by', 'uk-ogl', 'cc-by-nc-nd']
+open_licenses = ['cc-by-4.0', 'psi', 'cc-by', 'cc-by-3.0', 'cc-by-2.0', 'cc-zero', 'cc0', 'gfdl', 'pddl', 'odc-by', 'uk-ogl', 'cc-by-nc-nd', 'cc-nc', 'cc-by-nc']
 five_star_formats = ['rdf', 'n3', 'sparql', 'ttl', 'rdf-xml', 'jsonld']
 four_star_formats = []
 three_star_formats = ["kml", "wcs", "netcdf", "tsv", "wfs", "kmz", "qgis", "ods", "json", "odb", "odf",
