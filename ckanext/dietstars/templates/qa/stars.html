@@ -17,7 +17,11 @@ reason - A reason why the dataset doesn't have a rating.
                 <span class="fa fa-star"></span>
             {%- endfor -%}
             {%- for index in range(5-stars) -%}
-                <span class="far fa-star"></span>
+              {%- if h.check_ckan_version(max_version="2.9.99") -%}
+                <span class="fa fa-star-o"></span>
+              {%- else -%}
+                <span class="fa-regular fa-star"></span>
+              {%- endif -%}
             {%- endfor -%}
             {%- if stars == 0 -%}
                 {# 0 stars looks awfully like 5 stars, so be explicit #}

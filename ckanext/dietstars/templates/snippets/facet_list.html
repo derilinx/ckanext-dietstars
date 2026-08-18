@@ -57,38 +57,7 @@ page and not the left column.
                         <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
                             <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
                                 {% if title == 'Openness' %}
-                                    {% if label_truncated == '5' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% elif label_truncated == '4' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% elif label_truncated == '3' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% elif label_truncated == '2' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% elif label_truncated == '1' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% elif label_truncated == '0' %}
-                                        <span>
-                                            <span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span><span style="display:inline" class="fa fa-star-o"></span>
-                                            {{ count }}
-                                        </span>
-                                    {% endif %}
-
+                                    {% snippet "qa/stars.html", stars=label_truncated|int %} {{ count }}
                                 {% else %}
                                     <span>{{ label_truncated }} {{ count }}</span>
                                 {% endif %}
@@ -97,18 +66,16 @@ page and not the left column.
                     {% endfor %}
                 </ul>
             </nav>
+				<p class="module-footer">
+				  {% if h.has_more_facets(name, search_facets) %}
+				    <a hx-boost="true" href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More {facet_type}').format(facet_type=title) }}</a>
+                                  {% elif '_%s_limit' % name in request.args %}
+				    <a hx-boost="true" href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show Only Popular {facet_type}').format(facet_type=title) }}</a>
+				  {% endif %}
+				</p>
+			    {% else %}
+				<p class="module-content empty">{{ _('There are no {facet_type} that match this search').format(facet_type=title) }}</p>
+			    {% endif %}
+			{% endwith %}
+		    {% endblock %}
 
-            <p class="module-footer">
-                {% if h.get_param_int('_%s_limit' % name) %}
-                    {% if h.has_more_facets(name, search_facets or c.search_facets) %}
-                        <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More {facet_type}').format(facet_type=title) }}</a>
-                    {% endif %}
-                {% else %}
-                    <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show Only Popular {facet_type}').format(facet_type=title) }}</a>
-                {% endif %}
-            </p>
-        {% else %}
-            <p class="module-content empty">{{ _('There are no {facet_type} that match this search').format(facet_type=title) }}</p>
-        {% endif %}
-    {% endwith %}
-{% endblock %}
