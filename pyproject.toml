@@ -1,8 +1,8 @@
 [project]
 name = "ckanext-dietstars"
 version = "0.0.1"
-description = "Diet Stars"
-readme = "README.rst"
+description = "Show an Openness score using 0 to 5 stars depending on the openness of the metadata"
+readme = "README.md"
 license = {text = "AGPL"}
 classifiers = [
     "Development Status :: 5 - Production",
