@@ -8,7 +8,7 @@ import ckan.model as model
 import ckan.lib.helpers as h
 
 
-open_licenses = ['cc-by-4.0', 'psi', 'cc-by', 'cc-by-3.0', 'cc-by-2.0', 'cc-zero', 'cc0', 'gfdl', 'pddl', 'odc-by', 'uk-ogl']
+open_licenses = ['cc-by-4.0', 'psi', 'cc-by', 'cc-by-3.0', 'cc-by-2.0', 'cc-zero', 'cc0', 'gfdl', 'pddl', 'odc-by', 'uk-ogl', 'cc-by-nc-nd', 'cc-nc', 'cc-by-nc']
 five_star_formats = ['rdf', 'n3', 'sparql', 'ttl', 'rdf-xml', 'jsonld']
 four_star_formats = []
 three_star_formats = ["kml", "wcs", "netcdf", "tsv", "wfs", "kmz", "qgis", "ods", "json", "odb", "odf",
@@ -40,23 +40,37 @@ def get_qa_dict(pkg_dict):
     qa_dict['openness_score'] = 1
     qa_dict['openness_score_reason'] = 'The dataset license is an open license'
 
-    # now we pretty much just compare formats
-    resource_formats = [r.get('format').lower() for r in pkg_dict.get('resources')]
+    # now we compare formats and check if the resource is in the datastore.
+    resource_formats = []
+    datastore_present = False
+
+    for r in pkg_dict.get('resources', []):
+        format = (r.get('format') or '').lower()
+        if format:
+            resource_formats.append(format)
+        if r.get('datastore_active'):
+            datastore_present = True
 
     share_elements = lambda a, b: not set(a).isdisjoint(set(b))
 
-    if (share_elements(resource_formats, five_star_formats)):
+    if share_elements(resource_formats, five_star_formats):
         qa_dict['openness_score'] = 5
         qa_dict['openness_score_reason'] = 'One of the resource formats is 5-star data - linked data.'
-    elif (share_elements(resource_formats, four_star_formats)):
+    elif share_elements(resource_formats, four_star_formats):
         qa_dict['openness_score'] = 4
         qa_dict['openness_score_reason'] = 'One of the resource formats is 4-star data - data that uses URIs.'
-    elif (share_elements(resource_formats, three_star_formats)):
+    elif share_elements(resource_formats, three_star_formats) or datastore_present:
         qa_dict['openness_score'] = 3
-        qa_dict['openness_score_reason'] = 'One of the resource formats is 3-star data - machine-readable data in an open format.'
-    elif (share_elements(resource_formats, two_star_formats)):
+        if share_elements(resource_formats, three_star_formats):
+            qa_dict[
+                'openness_score_reason'] = 'One of the resource formats is 3-star data - machine-readable data in an open format.'
+        else:
+            qa_dict[
+                'openness_score_reason'] = 'Datastore-backed resource detected - machine-readable data in an open format.'
+    elif share_elements(resource_formats, two_star_formats):
         qa_dict['openness_score'] = 2
-        qa_dict['openness_score_reason'] = 'One of the resource formats is 2-star data - machine-readable data in a proprietary format.'
+        qa_dict[
+            'openness_score_reason'] = 'One of the resource formats is 2-star data - machine-readable data in a proprietary format.'
 
     return qa_dict
 
