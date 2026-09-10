@@ -19,5 +19,15 @@ This is used to display the relevant stars in the frontend, in the following tem
 * Dataset items in lists (e.g. search results) (`package_item.html`)
 * Dataset page (`package/read_base.html`)
 
+## Configuration
+
+Enable the `dietstars` plugin
+
+
+> [!IMPORTANT]
+> If used alongside ckanext-psbthemealt, the dietstars plugin needs to be loaded first:
+>
+>     ckan.plugins = ... dietstars psbthemealt
+
 
 
